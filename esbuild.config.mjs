@@ -40,7 +40,7 @@ esbuild
 		sourcemap: prod ? false : "inline",
 		treeShaking: true,
 		outfile: prod
-			? "./build/main.js"
+			? "main.js"
 			: "/Users/darrenlu/Dropbox/project/obsidian-test/.obsidian/plugins/obsidian-basetag-renderer/main.js",
 	})
 	.catch(() => process.exit(1));
