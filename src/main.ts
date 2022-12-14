@@ -3,7 +3,6 @@ import { Plugin } from "obsidian";
 export default class TagRenderer extends Plugin {
 	async onload() {
 		this.registerMarkdownPostProcessor((el: HTMLElement) => {
-			console.log(el);
 			el.querySelectorAll("a.tag").forEach((a) => {
 				this.formatTag(a as HTMLAnchorElement);
 			});
@@ -24,12 +23,18 @@ export default class TagRenderer extends Plugin {
 			node.dataset.uri = `obsidian://search?vault=${encodeURIComponent(
 				this.app.vault.getName(),
 			)}&query=tag:${encodeURIComponent(text)}`;
-			node.textContent = text.slice(text.lastIndexOf("/") + 1);
+
+			// Remove the hash tags to conform to the same style.
+			node.textContent = text
+				.slice(text.lastIndexOf("/") + 1)
+				.replaceAll("#", "");
+
 			node.onclick = () => window.open(node.dataset.uri);
 
 			return node;
 		};
 
+		// Hide this node and append the custom tag node in its place.
 		el.style.display = "none";
 		el.parentNode?.insertBefore(createTagNode(el.textContent), el);
 	}
