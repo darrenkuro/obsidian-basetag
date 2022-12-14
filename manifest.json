@@ -1,9 +1,9 @@
 {
-	"id": "obsidian-tags-baser",
+	"id": "obsidian-basetag-renderer",
 	"name": "Base Tag Renderer",
 	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "This plugin renders the tags to discard the nesting while maintaining its tagging structure elsewhere.",
+	"description": "A lightweight plugin to only show the basename of nested tags.",
 	"author": "Darren Kuro",
 	"authorUrl": "https://obsidian.md",
 	"fundingUrl": "https://obsidian.md/pricing",
