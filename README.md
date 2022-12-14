@@ -2,7 +2,7 @@
 
 This plugin renders the only the basename of tags in preview mode while maintaining nested strucutre elsewhere.
 
-![](pic/basename.gif)
+![](pic/basetag.gif)
 
 It also appends a new class name (`basename-tag`) so it's possible to add custom style to it. 
 
