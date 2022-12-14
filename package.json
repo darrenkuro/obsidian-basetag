@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-tags-baser",
-	"version": "0.0.1",
-	"description": "This plugin renders the tags to discard the nesting while maintaining its tagging structure elsewhere.",
+	"name": "obsidian-basetag",
+	"version": "1.0.0",
+	"description": "This plugin renders the basename of tags in preview mode and add a 'basename-tag' class name.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

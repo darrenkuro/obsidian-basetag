@@ -1,11 +1,9 @@
 {
-	"id": "obsidian-basetag-renderer",
+	"id": "obsidian-basetag",
 	"name": "Base Tag Renderer",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A lightweight plugin to only show the basename of nested tags.",
-	"author": "Darren Kuro",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "This plugin renders the basename of tags in preview mode and add a 'basename-tag' class name.",
+	"author": "https://github.com/darrenkuro",
 	"isDesktopOnly": false
 }
