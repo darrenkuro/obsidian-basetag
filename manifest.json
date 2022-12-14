@@ -3,7 +3,7 @@
 	"name": "Base Tag Renderer",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This plugin renders the basename of tags in preview mode and add a 'basename-tag' class name.",
+	"description": "This plugin renders the basename of tags in preview mode.",
 	"author": "https://github.com/darrenkuro",
 	"isDesktopOnly": false
 }
