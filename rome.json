@@ -2,6 +2,7 @@
   "$schema": "./node_modules/rome/configuration_schema.json",
   "linter": {
     "enabled": true,
+    "ignore": ["node_modules"],
     "rules": {
       "recommended": true
     }
