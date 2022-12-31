@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-basetag",
-	"version": "1.0.3",
+	"version": "1.0.5",
 	"description": "This plugin renders the basename of tags in preview mode.",
 	"main": "main.js",
 	"scripts": {
