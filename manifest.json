@@ -1,9 +1,10 @@
 {
 	"id": "obsidian-basetag",
 	"name": "Base Tag Renderer",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"minAppVersion": "0.15.0",
 	"description": "This plugin renders the basename of tags in preview mode.",
-	"author": "https://github.com/darrenkuro",
+	"author": "Darren Kuro",
+    "authorUrl": "https://github.com/darrenkuro",
 	"isDesktopOnly": false
 }
