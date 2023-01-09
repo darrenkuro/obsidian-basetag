@@ -41,6 +41,6 @@ esbuild
 		treeShaking: true,
 		outfile: prod
 			? "main.js"
-			: "/Users/darrenlu/Dropbox/project/obsidian-test-vault/.obsidian/plugins/obsidian-basetag-renderer/main.js",
+			: "/Users/darrenlu/Dropbox/project/obsidian-test-vault/.obsidian/plugins/obsidian-basetag/main.js",
 	})
 	.catch(() => process.exit(1));

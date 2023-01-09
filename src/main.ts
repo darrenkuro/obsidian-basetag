@@ -4,7 +4,9 @@ export default class TagRenderer extends Plugin {
 	async onload() {
 		this.registerMarkdownPostProcessor((el: HTMLElement) => {
 			el.querySelectorAll("a.tag").forEach((a) => {
-				this.formatTag(a as HTMLAnchorElement);
+				a.className.includes("basename-rendered")
+					? null
+					: this.formatTag(a as HTMLAnchorElement);
 			});
 		});
 	}
@@ -33,6 +35,9 @@ export default class TagRenderer extends Plugin {
 
 			return node;
 		};
+
+		// Tag it as rendered.
+		el.classList.add("basename-rendered");
 
 		// Hide this node and append the custom tag node in its place.
 		el.style.display = "none";
