@@ -3,10 +3,11 @@ import { Plugin } from "obsidian";
 export default class TagRenderer extends Plugin {
 	async onload() {
 		this.registerMarkdownPostProcessor((el: HTMLElement) => {
-			el.querySelectorAll("a.tag").forEach((a) => {
-				a.className.includes("basename-rendered")
-					? null
-					: this.formatTag(a as HTMLAnchorElement);
+			// Find tags that are't rendered yet.
+			el.querySelectorAll(
+				"a.tag:not(.basename-tag):not(.basename-rendered)",
+			).forEach((a) => {
+				this.formatTag(a as HTMLAnchorElement);
 			});
 		});
 	}
