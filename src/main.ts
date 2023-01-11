@@ -1,12 +1,12 @@
 import { Plugin } from "obsidian";
 
+const BASETAG = "basename-tag";
+
 export default class TagRenderer extends Plugin {
 	async onload() {
 		this.registerMarkdownPostProcessor((el: HTMLElement) => {
-			// Find tags that are't rendered yet.
-			el.querySelectorAll(
-				"a.tag:not(.basename-tag):not(.basename-rendered)",
-			).forEach((a) => {
+			// Find the original tags to render.
+			el.querySelectorAll(`a.tag:not(.${BASETAG})`).forEach((a) => {
 				this.formatTag(a as HTMLAnchorElement);
 			});
 		});
@@ -37,9 +37,8 @@ export default class TagRenderer extends Plugin {
 			return node;
 		};
 
-		// Tag it as rendered.
-		el.classList.add("basename-rendered");
-
+		// Remove class 'tag' so it doesn't get rendered again.
+		el.classList.remove("tag");
 		// Hide this node and append the custom tag node in its place.
 		el.style.display = "none";
 		el.parentNode?.insertBefore(createTagNode(el.textContent), el);
