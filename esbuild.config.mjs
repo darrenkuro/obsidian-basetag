@@ -39,8 +39,6 @@ esbuild
 		logLevel: "info",
 		sourcemap: prod ? false : "inline",
 		treeShaking: true,
-		outfile: prod
-			? "main.js"
-			: "/Users/darrenlu/Dropbox/project/obsidian-test-vault/.obsidian/plugins/obsidian-basetag/main.js",
+		outfile: prod ? "main.js" : "../test-vault/.obsidian/plugins/dev/main.js",
 	})
 	.catch(() => process.exit(1));

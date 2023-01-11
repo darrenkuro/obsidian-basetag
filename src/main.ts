@@ -18,14 +18,15 @@ export default class TagRenderer extends Plugin {
 			const node = document.createElement("a");
 			if (!text) return node;
 
-			node.className = "tag basename-tag";
+			// Keep the 'tag' class for consistent css styles.
+			node.className = `tag ${BASETAG}`;
 			node.target = "_blank";
 			node.rel = "noopener";
 			node.href = text;
 
-			node.dataset.uri = `obsidian://search?vault=${encodeURIComponent(
-				this.app.vault.getName(),
-			)}&query=tag:${encodeURIComponent(text)}`;
+			const vaultStr = encodeURIComponent(this.app.vault.getName());
+			const queryStr = `tag:${encodeURIComponent(text)}`;
+			node.dataset.uri = `obsidian://search?vault=${vaultStr}&query=${queryStr}`;
 
 			// Remove the hash tags to conform to the same style.
 			node.textContent = text
@@ -38,7 +39,7 @@ export default class TagRenderer extends Plugin {
 		};
 
 		// Remove class 'tag' so it doesn't get rendered again.
-		el.classList.remove("tag");
+		el.removeAttribute("class");
 		// Hide this node and append the custom tag node in its place.
 		el.style.display = "none";
 		el.parentNode?.insertBefore(createTagNode(el.textContent), el);
