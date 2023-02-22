@@ -1,6 +1,6 @@
 {
     "name": "obsidian-basetag",
-    "version": "1.0.7",
+    "version": "1.1.1",
     "description": "This plugin renders the basename of tags in preview mode.",
     "main": "main.js",
     "scripts": {
@@ -15,9 +15,10 @@
     "author": "Darren Kuro",
     "license": "MIT",
     "devDependencies": {
-        "@types/node": "^16.11.6",
+        "@codemirror/language": "^6.5.0",
         "@codemirror/state": "^6.0.0",
         "@codemirror/view": "^6.0.0",
+        "@types/node": "^16.11.6",
         "builtin-modules": "3.3.0",
         "esbuild": "0.14.47",
         "obsidian": "latest",
