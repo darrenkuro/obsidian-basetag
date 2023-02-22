@@ -1,6 +1,6 @@
 # Obsidian Base Tag Renderer
 
-This plugin renders only the basename for tags in preview mode while maintaining the nested strucutres elsewhere.
+This plugin renders only the basename for tags while maintaining the nested strucutres elsewhere.
 
 It also appends a new class name (`basename-tag`) so it's possible to add custom style to it. 
 
@@ -19,3 +19,8 @@ a.basename-tag[href*="dog"]::before {
     content: "🐶 ";
 }
 ```
+
+# Version 1.1 (Feb 23rd, 2023)
+
+- Add support for editor mode including tags in the frontmatter.
+
