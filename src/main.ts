@@ -14,9 +14,10 @@ import { livePreviewState } from "obsidian";
 
 const BASETAG = "basename-tag";
 
+/** Get the current vault name. */
 const getVaultName = () => window.app.vault.getName();
 
-// Create a custom tag node.
+/** Create a custom tag node from text content (can include #). */
 const createTagNode = (text: string | null) => {
 	const node = document.createElement("a");
 	if (!text) return node;
@@ -39,6 +40,7 @@ const createTagNode = (text: string | null) => {
 	return node;
 };
 
+/** Create a tag node in the type of widget from text content. */
 class TagWidget extends WidgetType {
 	constructor(private text: string) {
 		super();
@@ -75,17 +77,22 @@ class editorPlugin implements PluginValue {
 				from,
 				to,
 				enter: (node) => {
+					// Known issues: do not support live preview in some cases (i.e. under callout list)
+					// Do not support frontmatter (fixable)
+
+					// Handle tags that's in the main content.
 					if (node.name.contains("hashtag-end")) {
+						// Do not render if falls under selection (cursor) range.
 						const extendedFrom = node.from - 1;
 						const extendedTo = node.to + 1;
-						// Ignore if falls under selection range
+
 						for (const range of view.state.selection.ranges) {
 							if (extendedFrom <= range.to && range.from < extendedTo) {
 								return;
 							}
 						}
+
 						const text = view.state.sliceDoc(node.from, node.to);
-						console.log(text);
 						const lastIndex = text.lastIndexOf("/");
 						if (lastIndex < 0) {
 							return;
@@ -109,29 +116,23 @@ class editorPlugin implements PluginValue {
 
 export default class TagRenderer extends Plugin {
 	async onload() {
-		// For editor in livepreview state.
-		this.registerEditorExtension(this.editorExtension(this));
+		this.registerEditorExtension(
+			ViewPlugin.fromClass(editorPlugin, {
+				decorations: (value) => value.decorations,
+			}),
+		);
 
-		// For preview state.
 		this.registerMarkdownPostProcessor((el: HTMLElement) => {
 			// Find the original tags to render.
-			el.querySelectorAll(`a.tag:not(.${BASETAG})`).forEach((a) => {
-				this.previewFormatter(a as HTMLAnchorElement);
-			});
-		});
-	}
-
-	private previewFormatter(el: HTMLAnchorElement) {
-		// Remove class 'tag' so it doesn't get rendered again.
-		el.removeAttribute("class");
-		// Hide this node and append the custom tag node in its place.
-		el.style.display = "none";
-		el.parentNode?.insertBefore(createTagNode(el.textContent), el);
-	}
-
-	private editorExtension(plugin: TagRenderer) {
-		return ViewPlugin.fromClass(editorPlugin, {
-			decorations: (value) => value.decorations,
+			el.querySelectorAll(`a.tag:not(.${BASETAG})`).forEach(
+				(node: HTMLAnchorElement) => {
+					// Remove class 'tag' so it doesn't get rendered again.
+					node.removeAttribute("class");
+					// Hide this node and append the custom tag node in its place.
+					node.style.display = "none";
+					node.parentNode?.insertBefore(createTagNode(node.textContent), node);
+				},
+			);
 		});
 	}
 }
