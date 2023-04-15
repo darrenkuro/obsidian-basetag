@@ -26,7 +26,8 @@ const createTagNode = (text: string | null) => {
 	node.className = `tag ${BASETAG}`;
 	node.target = "_blank";
 	node.rel = "noopener";
-	node.href = text;
+	// To comply with colorful-tag css seletor
+	node.href = `#${text}`;
 
 	const vaultStr = encodeURIComponent(getVaultName());
 	const queryStr = `tag:${encodeURIComponent(text)}`;
