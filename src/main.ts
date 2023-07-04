@@ -18,7 +18,7 @@ const BASETAG = "basename-tag";
 const getVaultName = () => window.app.vault.getName();
 
 /** Create a custom tag node from text content (can include #). */
-const createTagNode = (text: string | null) => {
+const createTagNode = (text: string | null, readingMode: boolean) => {
 	const node = document.createElement("a");
 	if (!text) return node;
 
@@ -27,7 +27,7 @@ const createTagNode = (text: string | null) => {
 	node.target = "_blank";
 	node.rel = "noopener";
 	// To comply with colorful-tag css seletor
-	node.href = `#${text}`;
+	node.href = readingMode ? `${text}` : `#${text}`;
 
 	const vaultStr = encodeURIComponent(getVaultName());
 	const queryStr = `tag:${encodeURIComponent(text)}`;
@@ -43,12 +43,12 @@ const createTagNode = (text: string | null) => {
 
 /** Create a tag node in the type of widget from text content. */
 class TagWidget extends WidgetType {
-	constructor(private text: string) {
+	constructor(private text: string, private readingMode: boolean) {
 		super();
 	}
 
 	toDOM(view: EditorView): HTMLElement {
-		return createTagNode(this.text);
+		return createTagNode(this.text, this.readingMode);
 	}
 }
 
@@ -97,7 +97,7 @@ class editorPlugin implements PluginValue {
 							node.from - 1,
 							node.to,
 							Decoration.replace({
-								widget: new TagWidget(text),
+								widget: new TagWidget(text, false),
 							}),
 						);
 					}
@@ -150,7 +150,7 @@ class editorPlugin implements PluginValue {
 								currentIndex,
 								currentIndex + tagsArray[i].length,
 								Decoration.replace({
-									widget: new TagWidget(tagsArray[i]),
+									widget: new TagWidget(tagsArray[i], false),
 								}),
 							);
 
@@ -182,7 +182,7 @@ export default class TagRenderer extends Plugin {
 					node.removeAttribute("class");
 					// Hide this node and append the custom tag node in its place.
 					node.style.display = "none";
-					node.parentNode?.insertBefore(createTagNode(node.textContent), node);
+					node.parentNode?.insertBefore(createTagNode(node.textContent, true), node);
 				},
 			);
 		});
