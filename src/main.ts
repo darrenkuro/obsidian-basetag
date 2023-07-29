@@ -1,4 +1,4 @@
-import { Plugin } from "obsidian";
+import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
 import { syntaxTree } from "@codemirror/language";
 import { RangeSetBuilder } from "@codemirror/state";
 import {
@@ -167,10 +167,13 @@ class editorPlugin implements PluginValue {
 }
 
 export default class TagRenderer extends Plugin {
+	public settings: SettingParams = DEFAULT_SETTING;
+
 	async onload() {
+		this.loadSettings();
 		this.registerEditorExtension(
 			ViewPlugin.fromClass(editorPlugin, {
-				decorations: (value) => value.decorations,
+				decorations: (value) => this.settings.renderOnEditor ? value.decorations: new RangeSetBuilder<Decoration>().finish(),
 			}),
 		);
 
@@ -186,5 +189,44 @@ export default class TagRenderer extends Plugin {
 				},
 			);
 		});
+		this.addSettingTab(new SettingTab(this.app, this));
 	}
+	async loadSettings() {
+        this.settings = Object.assign(DEFAULT_SETTING, await this.loadData());
+    }
+    async saveSettings() {
+        await this.saveData(this.settings);
+    }
+}
+
+interface SettingParams {
+    renderOnEditor: boolean;
+}
+
+const DEFAULT_SETTING: SettingParams = {
+    renderOnEditor: true
+};
+
+class SettingTab extends PluginSettingTab {
+    constructor(public app: App, public plugin: TagRenderer) {
+        super(app, plugin);
+    }
+
+    async display() {
+        const { settings: setting } = this.plugin;
+        const { containerEl } = this;
+        containerEl.empty();
+
+        const editorSetting = new Setting(containerEl);
+        editorSetting
+            .setName("Render on Editor")
+            .setDesc("Render basetags also on editor.")
+            .addToggle((toggle) => {
+                toggle.setValue(setting.renderOnEditor);
+                toggle.onChange(async (value) => {
+                    setting.renderOnEditor = value;
+                    await this.plugin.saveSettings();
+                });
+            });
+    }
 }
