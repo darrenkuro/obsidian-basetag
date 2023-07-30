@@ -173,7 +173,11 @@ export default class TagRenderer extends Plugin {
 		this.loadSettings();
 		this.registerEditorExtension(
 			ViewPlugin.fromClass(editorPlugin, {
-				decorations: (value) => this.settings.renderOnEditor ? value.decorations: new RangeSetBuilder<Decoration>().finish(),
+				decorations: (value) =>
+					// only renders on editor if setting allows
+					this.settings.renderOnEditor
+						? value.decorations
+						: new RangeSetBuilder<Decoration>().finish(),
 			}),
 		);
 
@@ -185,48 +189,65 @@ export default class TagRenderer extends Plugin {
 					node.removeAttribute("class");
 					// Hide this node and append the custom tag node in its place.
 					node.style.display = "none";
-					node.parentNode?.insertBefore(createTagNode(node.textContent, true), node);
+					node.parentNode?.insertBefore(
+						createTagNode(node.textContent, true),
+						node,
+					);
 				},
 			);
 		});
+
+		// Rerender property by changing the text directly
+		this.registerEvent(
+			this.app.workspace.on("layout-change", () => {
+				document
+					.querySelectorAll(
+						'[data-property-key="tags"] .multi-select-pill-content span',
+					)
+					.forEach((node: HTMLAnchorElement) => {
+						const text = node.textContent ?? "";
+						node.textContent = text.slice(text.lastIndexOf("/") + 1);
+					});
+			}),
+		);
 		this.addSettingTab(new SettingTab(this.app, this));
 	}
 	async loadSettings() {
-        this.settings = Object.assign(DEFAULT_SETTING, await this.loadData());
-    }
-    async saveSettings() {
-        await this.saveData(this.settings);
-    }
+		this.settings = Object.assign(DEFAULT_SETTING, await this.loadData());
+	}
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
 }
 
 interface SettingParams {
-    renderOnEditor: boolean;
+	renderOnEditor: boolean;
 }
 
 const DEFAULT_SETTING: SettingParams = {
-    renderOnEditor: true
+	renderOnEditor: true,
 };
 
 class SettingTab extends PluginSettingTab {
-    constructor(public app: App, public plugin: TagRenderer) {
-        super(app, plugin);
-    }
+	constructor(public app: App, public plugin: TagRenderer) {
+		super(app, plugin);
+	}
 
-    async display() {
-        const { settings: setting } = this.plugin;
-        const { containerEl } = this;
-        containerEl.empty();
+	async display() {
+		const { settings: setting } = this.plugin;
+		const { containerEl } = this;
+		containerEl.empty();
 
-        const editorSetting = new Setting(containerEl);
-        editorSetting
-            .setName("Render on Editor")
-            .setDesc("Render basetags also on editor.")
-            .addToggle((toggle) => {
-                toggle.setValue(setting.renderOnEditor);
-                toggle.onChange(async (value) => {
-                    setting.renderOnEditor = value;
-                    await this.plugin.saveSettings();
-                });
-            });
-    }
+		const editorSetting = new Setting(containerEl);
+		editorSetting
+			.setName("Render on Editor")
+			.setDesc("Render basetags also on editor.")
+			.addToggle((toggle) => {
+				toggle.setValue(setting.renderOnEditor);
+				toggle.onChange(async (value) => {
+					setting.renderOnEditor = value;
+					await this.plugin.saveSettings();
+				});
+			});
+	}
 }
