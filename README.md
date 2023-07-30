@@ -2,7 +2,7 @@
 
 This plugin renders only the basename for tags while maintaining the nested strucutres elsewhere.
 
-It also appends a new class name (`basename-tag`) so it's possible to add custom style to it. 
+It also appends a new class name (`basename-tag`) so it's possible to add custom style to it.
 
 ![](pic/basetag.gif)
 
@@ -19,6 +19,10 @@ a.basename-tag[href*="dog"]::before {
     content: "🐶 ";
 }
 ```
+
+# Version 1.2 (July 30th, 2023)
+
+- Add text change for tags in property as well.
 
 # Version 1.1 (Feb 23rd, 2023)
 
