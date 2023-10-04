@@ -1,6 +1,6 @@
 {
     "name": "obsidian-basetag",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "This plugin renders the basename for tags.",
     "main": "main.js",
     "scripts": {

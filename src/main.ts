@@ -166,6 +166,20 @@ class editorPlugin implements PluginValue {
 	}
 }
 
+// Rerender Property by changing the text directly
+const rerenderProperty = () => {
+	document
+		.querySelectorAll(
+			`[data-property-key="tags"] .multi-select-pill-content span:not(.${BASETAG})`,
+		)
+		.forEach((node: HTMLSpanElement) => {
+			const text = node.textContent ?? "";
+			node.textContent = text.slice(text.lastIndexOf("/") + 1);
+			node.className = BASETAG;
+			node.dataset.tag = text;
+		});
+}
+
 export default class TagRenderer extends Plugin {
 	public settings: SettingParams = DEFAULT_SETTING;
 
@@ -199,17 +213,13 @@ export default class TagRenderer extends Plugin {
 
 		// Rerender property by changing the text directly
 		this.registerEvent(
-			this.app.workspace.on("layout-change", () => {
-				document
-					.querySelectorAll(
-						'[data-property-key="tags"] .multi-select-pill-content span',
-					)
-					.forEach((node: HTMLAnchorElement) => {
-						const text = node.textContent ?? "";
-						node.textContent = text.slice(text.lastIndexOf("/") + 1);
-					});
-			}),
+			this.app.workspace.on("layout-change", rerenderProperty)
 		);
+
+		this.registerEvent(
+			this.app.workspace.on("file-open", rerenderProperty)
+		);
+
 		this.addSettingTab(new SettingTab(this.app, this));
 	}
 	async loadSettings() {

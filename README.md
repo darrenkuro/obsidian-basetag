@@ -9,13 +9,16 @@ It also appends a new class name (`basename-tag`) so it's possible to add custom
 The custom css applied for the above example -
 
 ```css
-a.basename-tag[href*="animal"]::before{
+a.basename-tag[href*="animal"]::before,
+span.basename-tag[data-tag*="animal"]::before {
     content: "😍 ";
 }
-a.basename-tag[href*="cat"]::before {
+a.basename-tag[href*="cat"]::before,
+span.basename-tag[data-tag*="cat"]::before {
     content: "🐱 ";
 }
-a.basename-tag[href*="dog"]::before {
+a.basename-tag[href*="dog"]::before,
+span.basename-tag[data-tag*="dog"]::before {
     content: "🐶 ";
 }
 ```
