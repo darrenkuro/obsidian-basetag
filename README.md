@@ -4,6 +4,8 @@ This plugin renders only the basename for tags while maintaining the nested stru
 
 It also appends a new class name (`basename-tag`) so it's possible to add custom style to it.
 
+* This is not actively maintained. As I haven't used Obsidian much, and they kept rolling out new features so it's a bit hard to keep up. I am currently busy with other projects also. Feel free to do a PR if you want to add something. The code structure is very simple. Issues aren't guaranteed to be resolved promptly but I'll try my best. *
+
 ![](pic/basetag.gif)
 
 The custom css applied for the above example -
